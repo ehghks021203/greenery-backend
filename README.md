@@ -9,10 +9,10 @@
 <br/>
 
 ## **Environment**
-GPU : Nvidia Quadro RTX 5000 * 2
-OS  : Ubuntu 22.04 LTS
-CUDA 12.1
-PyTorch 2.1.1
+GPU : Nvidia Quadro RTX 5000 * 2\
+OS  : Ubuntu 22.04 LTS\
+CUDA 12.1\
+PyTorch 2.1.1\
 
 <br/>
 
