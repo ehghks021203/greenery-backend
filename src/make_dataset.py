@@ -6,7 +6,6 @@ from config import Data
 from src import data_utils
 from src.data_preprocessing import data_preprocessing
 
-
 def load_breakpoint() -> dict:
     if os.path.isfile(Data.BREAK_POINT_PATH):
         with open(Data.BREAK_POINT_PATH, "r", encoding="utf-8") as f:
@@ -74,6 +73,9 @@ if __name__ == "__main__":
         with open(os.path.join(Data.DATASET_PATH, "data.yaml"), "w", encoding="utf-8") as f:
             f.write(data_str)
 
+    for k, v in category_dict.items():
+        print(k, v)
+
     # Data preprocessing
     print("### Start data preprocessing...")
     print("path: {}".format(Data.PREP_DATA_PATH))
@@ -89,17 +91,17 @@ if __name__ == "__main__":
             if not sub in bp[main]:
                 bp[main][sub] = {"complete":0}
             
-            for dir in data_utils.list_dir(os.path.join(Data.RAW_DATA_PATH, "labels", main, sub)):
+            for dir in data_utils.list_dir(os.path.join(Data.RAW_DATA_PATH, "images", main, sub)):
                 if dir in bp[main][sub] and bp[main][sub][dir]["complete"] == 1:
                     continue
                 if not dir in bp[main][sub]:
                     bp[main][sub][dir] = {"complete":0}
 
-                for file in data_utils.list_dir(os.path.join(Data.RAW_DATA_PATH, "labels", main, sub, dir)):
+                for file in data_utils.list_dir(os.path.join(Data.RAW_DATA_PATH, "images", main, sub, dir)):
                     try:
                         img_path = os.path.join(Data.RAW_DATA_PATH, "images", main, sub, dir, file.split(".")[0] + ".jpg")
                         prep_img_path = os.path.join(Data.PREP_DATA_PATH, "images", file.split(".")[0] + ".jpg")
-                        json_path = os.path.join(Data.RAW_DATA_PATH, "labels", main, sub, dir, file)
+                        json_path = os.path.join(Data.RAW_DATA_PATH, "labels", main, sub, dir, file.split(".")[0] + ".Json")
                         prep_json_path = os.path.join(Data.PREP_DATA_PATH, "labels", file.split(".")[0] + ".txt")
                         if os.path.isfile(img_path) and os.path.isfile(json_path):
                             data_preprocessing(
@@ -110,7 +112,10 @@ if __name__ == "__main__":
                                 img_size=Data.IMAGE_SIZE,
                                 category=category_dict
                             )
-                        total_data_count += 1
+                            total_data_count += 1
+                        elif not os.path.isfile(json_path):
+                            print("!! ERROR: {} file is not exist.".format(os.path.isfile(json_path)))
+                        
                         print("\rPREP COUNT: {:5d}".format(total_data_count), end="")
                     except Exception as e:
                         print(e)
@@ -120,10 +125,3 @@ if __name__ == "__main__":
                 save_breakpoint(bp, main, sub, dir)
             save_breakpoint(bp, main, sub)
         save_breakpoint(bp, main)
-                #try:
-                #    img_path = os.path.join(Data.RAW_DATA_PATH, "images", m, s, f, )
-                #print(f)
-
-    # create_folders(PREP_DATA_PATH)
-    # distribute_files(os.path.join(PREP_DATA_PATH, DATA_TYPE, "images"), os.path.join(PREP_DATA_PATH, DATA_TYPE, "labels"))
-    # print(CATEGORY)

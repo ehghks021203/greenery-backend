@@ -42,3 +42,4 @@ if __name__ == "__main__":
     
     # split preprocessing dataset(train, valid, test)
     distribute_files(os.path.join(Data.PREP_DATA_PATH, "images"), os.path.join(Data.PREP_DATA_PATH, "labels"))
+    
