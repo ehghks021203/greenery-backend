@@ -5,19 +5,8 @@ import yaml
 
 
 def predict(path):
-    # load yaml
-    #with open("/home/students/cs/greenery/prep_datas/data.yaml") as f:
-    #    film = yaml.load(f, Loader=yaml.FullLoader)
-
     # Load a model
     model = YOLO(YOLOConfig.MODEL_PATH)  # pretrained YOLOv8n models
-
-    """
-    for idx, name in enumerate(film["names"]):
-        model.names[idx] = ""
-        model.names[idx] = name
-        print(model.names[idx])
-    """
 
     # Run batched inference on a list of images
     results = model(
